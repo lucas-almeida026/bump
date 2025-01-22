@@ -12,6 +12,9 @@ struct Cli {
 
 #[derive(Subcommand)]
 pub enum Command {
+	#[command(name = "alpha")]
+	Alpha(CmdArgs),
+
     #[command(name = "patch")]
     Patch(CmdArgs),
 
@@ -128,6 +131,10 @@ impl Version {
 		self.minor = 0;
 		self.patch = 0;
 	}
+
+	pub fn increment_code(&mut self) {
+		self.code += 1;
+	}
 }
 
 fn get_version_str_from_file_path(file_path: &String) -> Result<String, String> {
@@ -191,6 +198,16 @@ fn main() -> Result<(), String> {
 			replace_version_payload(&file_path, version)?;
 			println!("new version is {}", vstr);
         }
+		Command::Alpha(CmdArgs { file_path }) => {
+			let version_str = get_version_str_from_file_path(&file_path)?;
+			let mut version = Version::try_from(version_str).map_err(|e| e.to_string())?;
+
+			version.increment_code();
+			let vstr = version.to_string();
+
+			replace_version_payload(&file_path, version)?;
+			println!("new version is {}", vstr);
+		}
     }
 	Ok(())
 }
