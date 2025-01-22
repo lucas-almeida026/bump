@@ -3,8 +3,8 @@ use std::fs;
 
 #[derive(Parser)]
 #[command(name = "bump")]
-#[command(version = "0.1")]
-#[command(about = "bump pubspec vresion", long_about = None)]
+#[command(version = "0.2.0")]
+#[command(about = "bump pubspec version", long_about = None)]
 struct Cli {
     #[command(subcommand)]
     pub command: Command,
